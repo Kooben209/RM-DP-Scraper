@@ -71,7 +71,7 @@ if os.environ.get("MORPH_SLEEP") is not None:
 for k, v in filtered_dict.items(): 
 	checkURL = v
 	if os.environ.get('MORPH_MAXDAYS') == "0":
-		checkURL = checkURL.replace("&maxDaysSinceAdded=1","")
+		checkURL = checkURL.replace("&maxDaysSinceAdded=3","")
 		
 	if os.environ.get('MORPH_DEBUG') == "1":
 		print(checkURL)
