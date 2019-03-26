@@ -106,8 +106,8 @@ def getAllSoldPrices(currentMonth):
 							foundSoldPrices += 1
 
 			line_count += 1
-	#print(f'Processed {line_count} lines.')
-	#print(f'Found {foundSoldPrices} Recent Sold Prices.')
+	print(f'Processed {line_count} lines.')
+	print(f'Found {foundSoldPrices} Recent Sold Prices.')
 	
 if __name__ == '__main__':
 	if len(sys.argv) > 1:
