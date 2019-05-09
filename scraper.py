@@ -14,6 +14,7 @@ from decimal import Decimal
 from getSoldPrices import getAllSoldPrices
 import requests
 import random
+import urllib.parse as urlparse
 
 import setEnvs
 
@@ -70,6 +71,14 @@ if os.environ.get("MORPH_SLEEP") is not None:
 
 for k, v in filtered_dict.items(): 
 	checkURL = v
+	parsed = urlparse.urlparse(checkURL)
+	URLKeywords = urlparse.parse_qs(parsed.query)
+	if 'keywords' in URLKeywords:
+		keywords = URLKeywords['keywords']
+		keywords = keywords[0].split(",")
+	else:
+		keywords = ""
+
 	if os.environ.get('MORPH_MAXDAYS') == "0":
 		checkURL = checkURL.replace("&maxDaysSinceAdded=3","")
 		
@@ -121,11 +130,27 @@ for k, v in filtered_dict.items():
 						if any(x in agent.lower() for x in excludeAgents):
 							continue
 
-						hashTagLocation = k.replace("MORPH_URL_","").replace("_"," ").title().replace(" ","")
-						location = k.replace("MORPH_URL_","").replace("_"," ").title()
-						
 						propLink="https://www.rightmove.co.uk"+advert.find("a", {"class" : "propertyCard-link"}).get('href')
 						propId=re.findall('\d+',propLink)
+
+						location = k.replace("MORPH_URL_","").replace("_"," ").title()
+
+						if location.lower() == 'custom':
+							time.sleep(sleepTime)
+							with requests.session() as s:
+								s.headers['user-agent'] = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36'
+								advertPage = s.get(propLink)
+								advertSoup = BeautifulSoup(advertPage.content, 'html.parser')
+								advertDescription = advertSoup.find("div", {"id" : "description"}).text
+
+								if not any(x in advertDescription for x in keywords):
+									continue
+
+						hashTagLocation = k.replace("MORPH_URL_","").replace("_"," ").title().replace(" ","")
+
+						
+
+
 						title = advert.find("h2", {"class" : "propertyCard-title"}).text
 						address = advert.find("address", {"class" : "propertyCard-address"}).find("span").text
 						branchName = advert.find("span", {"class" : "propertyCard-branchSummary-branchName"}).text
@@ -140,7 +165,7 @@ for k, v in filtered_dict.items():
 						
 						link = advert.find("a", {"class" : "propertyCard-link"})
 						
-						if location.lower() == 'uk':
+						if location.lower() in 'uk,custom':
 							location = branchNameLocation.title()
 							hashTagLocation = branchNameLocation.replace("_"," ").title().replace(" ","")
 						
