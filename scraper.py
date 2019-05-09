@@ -128,11 +128,21 @@ for k, v in filtered_dict.items():
 						propId=re.findall('\d+',propLink)
 						title = advert.find("h2", {"class" : "propertyCard-title"}).text
 						address = advert.find("address", {"class" : "propertyCard-address"}).find("span").text
+						branchName = advert.find("span", {"class" : "propertyCard-branchSummary-branchName"}).text
+						
+						branchNameLocation = branchName.split(',')[-1].strip().lower()	
+
+						for r in (("auctions", ""), ("branch", ""), ("- sales", ""), ("sales", ""), ("Nationwide",""), ("Country Department","")):
+							branchNameLocation = branchNameLocation.replace(*r).strip()
+					
+						if(branchNameLocation == ""):
+							branchNameLocation = address.split(',')[-1].strip()
+						
 						link = advert.find("a", {"class" : "propertyCard-link"})
 						
 						if location.lower() == 'uk':
-							location = addressLastPart.title()
-							hashTagLocation = addressLastPart.replace("_"," ").title().replace(" ","")
+							location = branchNameLocation.title()
+							hashTagLocation = branchNameLocation.replace("_"," ").title().replace(" ","")
 						
 						price = parseAskingPrice(advert.find("div", {"class" : "propertyCard-priceValue"}).text)
 						displayPrice = advert.find("div", {"class" : "propertyCard-priceValue"}).text
