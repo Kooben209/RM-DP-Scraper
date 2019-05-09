@@ -18,6 +18,9 @@ import urllib.parse as urlparse
 
 import setEnvs
 
+def hasNumbers(inputString):
+	return any(char.isdigit() for char in inputString)
+
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-gpu")
@@ -160,12 +163,20 @@ for k, v in filtered_dict.items():
 						if(branchNameLocation == ""):
 							branchNameLocation = address.split(',')[-1].strip()
 						
+						addressParts = address.split(',')
+						if len(addressParts) > 1:
+							addressLastPart = addressParts[-1].strip()
+							if hasNumbers(addressLastPart):
+								addressLastPart = addressParts[-2].strip()
+						else:
+							addressLastPart = address
+
 						link = advert.find("a", {"class" : "propertyCard-link"})
 						
 						checkLocation = ['uk','custom']
 						if any(x in location.lower() for x in checkLocation):
-							location = branchNameLocation.title()
-							hashTagLocation = branchNameLocation.replace("_"," ").title().replace(" ","")
+							location = addressLastPart.title()
+							hashTagLocation = addressLastPart.replace("_"," ").title().replace(" ","")
 						
 						price = parseAskingPrice(advert.find("div", {"class" : "propertyCard-priceValue"}).text)
 						displayPrice = advert.find("div", {"class" : "propertyCard-priceValue"}).text
