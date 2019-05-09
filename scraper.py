@@ -135,7 +135,7 @@ for k, v in filtered_dict.items():
 
 						location = k.replace("MORPH_URL_","").replace("_"," ").title()
 
-						if location.lower() == 'custom':
+						if 'custom' in location.lower():
 							time.sleep(sleepTime)
 							with requests.session() as s:
 								s.headers['user-agent'] = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36'
@@ -147,10 +147,7 @@ for k, v in filtered_dict.items():
 									continue
 
 						hashTagLocation = k.replace("MORPH_URL_","").replace("_"," ").title().replace(" ","")
-
 						
-
-
 						title = advert.find("h2", {"class" : "propertyCard-title"}).text
 						address = advert.find("address", {"class" : "propertyCard-address"}).find("span").text
 						branchName = advert.find("span", {"class" : "propertyCard-branchSummary-branchName"}).text
@@ -165,7 +162,8 @@ for k, v in filtered_dict.items():
 						
 						link = advert.find("a", {"class" : "propertyCard-link"})
 						
-						if location.lower() in 'uk,custom':
+						checkLocation = ['uk','custom']
+						if any(x in location.lower() for x in checkLocation):
 							location = branchNameLocation.title()
 							hashTagLocation = branchNameLocation.replace("_"," ").title().replace(" ","")
 						
