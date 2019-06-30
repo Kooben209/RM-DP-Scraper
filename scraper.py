@@ -92,7 +92,7 @@ for k, v in filtered_dict.items():
 			driver = webdriver.Chrome(chrome_options=chrome_options)
 			driverException = False
 		driver.get(checkURL)
-		numOfPages = int(driver.find_element_by_xpath('/html/body/div[1]/div[2]/div[1]/div[3]/div/div/div/div[2]/span[3]').text)
+		numOfPages = int(driver.find_element_by_css_selector("span[class='pagination-pageInfo'][data-bind='text: total']").text)
 	except ValueError:
 		numOfPages = 0	
 	except WebDriverException as e:
