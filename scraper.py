@@ -31,8 +31,8 @@ chrome_options.add_argument("disable-infobars")
 chrome_options.add_argument("--disable-extensions")
 
 driverException = False
-driver = webdriver.Chrome(chrome_options=chrome_options,executable_path='/usr/local/bin/chromedriver')
-#driver = webdriver.Chrome(chrome_options=chrome_options)
+#driver = webdriver.Chrome(chrome_options=chrome_options,executable_path='/usr/local/bin/chromedriver')
+driver = webdriver.Chrome(chrome_options=chrome_options)
 
 def parseAskingPrice(aPrice):
 	try:
@@ -155,7 +155,7 @@ for k, v in filtered_dict.items():
 						
 						title = advert.find("h2", {"class" : "propertyCard-title"}).text
 						address = advert.find("address", {"class" : "propertyCard-address"}).text
-						branchName = advert.find("span", {"class" : "propertyCard-branchSummary"}).text
+						branchName = advert.find("div", {"class" : "propertyCard-branchSummary"}).text
 						
 						branchNameLocation = branchName.split(',')[-1].strip().lower()	
 
