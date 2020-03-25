@@ -129,9 +129,11 @@ for k, v in filtered_dict.items():
 					if advert.find("div", {"class" : "propertyCard-keywordTag matched"}) is not None:
 						advertMatch = {}
 						postKey = random.choice(list(postTemplates))
-						agent = advert.find("span", {"class" : "propertyCard-branchSummary-branchName"}).text
-						if any(x in agent.lower() for x in excludeAgents):
-							continue
+
+						if advert.find("div", {"class" : "propertyCard-branchLogo"}).find("a" , {"class" : "propertyCard-branchLogo-link"}) is not None:
+							agent = advert.find("div", {"class" : "propertyCard-branchLogo"}).find("a" , {"class" : "propertyCard-branchLogo-link"}).get("title")
+							if any(x in agent.lower() for x in excludeAgents):
+								continue
 
 						propLink="https://www.rightmove.co.uk"+advert.find("a", {"class" : "propertyCard-link"}).get('href')
 						propId=re.findall('\d+',propLink)
@@ -152,7 +154,7 @@ for k, v in filtered_dict.items():
 						hashTagLocation = k.replace("MORPH_URL_","").replace("_"," ").title().replace(" ","")
 						
 						title = advert.find("h2", {"class" : "propertyCard-title"}).text
-						address = advert.find("address", {"class" : "propertyCard-address"}).find("span").text
+						address = advert.find("address", {"class" : "propertyCard-address"}).text
 						branchName = advert.find("span", {"class" : "propertyCard-branchSummary-branchName"}).text
 						
 						branchNameLocation = branchName.split(',')[-1].strip().lower()	
