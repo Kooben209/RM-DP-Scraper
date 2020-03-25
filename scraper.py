@@ -155,7 +155,7 @@ for k, v in filtered_dict.items():
 						
 						title = advert.find("h2", {"class" : "propertyCard-title"}).text
 						address = advert.find("address", {"class" : "propertyCard-address"}).text
-						branchName = advert.find("span", {"class" : "propertyCard-branchSummary-branchName"}).text
+						branchName = advert.find("span", {"class" : "propertyCard-branchSummary"}).text
 						
 						branchNameLocation = branchName.split(',')[-1].strip().lower()	
 
