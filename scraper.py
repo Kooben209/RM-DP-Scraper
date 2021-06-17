@@ -146,7 +146,10 @@ for k, v in filtered_dict.items():
 								s.headers['user-agent'] = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36'
 								advertPage = s.get(propLink)
 								advertSoup = BeautifulSoup(advertPage.content, 'html.parser')
-								advertDescription = advertSoup.find("div", {"id" : "description"}).text
+								if 'commercial' in advertPage.url: #check if commercial property page
+									advertDescription = advertSoup.find("p", {"itemprop" : "description"}).text
+								else:
+									advertDescription = advertSoup.find("h2", text='Property description').nextSibling.nextSibling.text
 
 								if not any(x in advertDescription for x in keywords):
 									continue
@@ -182,7 +185,10 @@ for k, v in filtered_dict.items():
 						
 						price = parseAskingPrice(advert.find("div", {"class" : "propertyCard-priceValue"}).text)
 						displayPrice = advert.find("div", {"class" : "propertyCard-priceValue"}).text
-						image1 = advert.find("img", {"alt" : "Property Image 1"}).get('src')
+						if advert.find("img", {"alt" : "Property Image 1"}) is None:
+							image1 = advert.findAll("img")[0].get('src')
+						else:
+							image1 = advert.find("img", {"alt" : "Property Image 1"}).get('src')
 						addedOrReduced = advert.find("span", {"class" : "propertyCard-branchSummary-addedOrReduced"}).text
 						if addedOrReduced != None and addedOrReduced != "":
 							if "Reduced" in addedOrReduced:
