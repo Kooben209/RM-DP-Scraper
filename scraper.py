@@ -130,7 +130,7 @@ for k, v in filtered_dict.items():
 						advertMatch = {}
 						postKey = random.choice(list(postTemplates))
 
-						if advert.find("div", {"class" : "propertyCard-branchLogo"}).find("a" , {"class" : "propertyCard-branchLogo-link"}) is not None:
+						if advert.find("div", {"class" : "propertyCard-branchLogo"}) is not None:
 							agent = advert.find("div", {"class" : "propertyCard-branchLogo"}).find("a" , {"class" : "propertyCard-branchLogo-link"}).get("title")
 							if any(x in agent.lower() for x in excludeAgents):
 								continue
