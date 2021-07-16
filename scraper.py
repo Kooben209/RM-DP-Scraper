@@ -72,6 +72,8 @@ if os.environ.get("MORPH_DB_ADD_COL") is not None:
 if os.environ.get("MORPH_SLEEP") is not None:
 	sleepTime = int(os.environ["MORPH_SLEEP"])
 
+scraperwiki.sqlite.execute("DELETE FROM data WHERE 'propId' in ( '80413752', '110383286', '108403724', '110425505', '110243744', '81009882', '110328962', '81010308', '108389390', '107762981', '110332100' )")
+
 for k, v in filtered_dict.items(): 
 	checkURL = v
 	parsed = urlparse.urlparse(checkURL)
